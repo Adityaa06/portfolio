@@ -1,6 +1,6 @@
 # 🚀 Aditya Singh | Professional Portfolio
 
-**Live Demo: [portfolio-seven-drab-0iyy497i88.vercel.app](https://portfolio-seven-drab-0iyy497i88.vercel.app)**
+**Live Demo: [adityaa06-portfolio.vercel.app](https://adityaa06-portfolio.vercel.app)**
 
 ![Portfolio Preview](https://github.com/Adityaa06/portfolio/raw/main/public/preview.png)
 
