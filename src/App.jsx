@@ -49,6 +49,9 @@ const SKILL_TABS = Object.keys(SKILLS);
 const PROJECTS = [
   {
     title: 'RecipeAI – Smart Cooking Assistant Website',
+    image: '/1.png',
+    github: 'https://github.com/Adityaa06/recipeeAI',
+    live: 'https://recipee-ai.vercel.app/',
     bullets: [
       'Built an AI-powered recipe platform that generates personalized dish recommendations based on user-provided ingredients.',
       'Integrated real-time cooking instructions to deliver a clear, step-by-step cooking experience for users.',
@@ -58,6 +61,9 @@ const PROJECTS = [
   },
   {
     title: 'Rangsutra – E-commerce Shopping Website',
+    image: '/2.png',
+    github: 'https://github.com/Adityaa06/E-COMMERCE',
+    live: 'https://www.youtube.com/watch?v=8kbmuxZU_GQ',
     bullets: [
       'Developed a fully functional e-commerce platform supporting product browsing, filtering, and a smooth checkout experience.',
       'Implemented secure user authentication and login system using PHP with proper session management for safe access.',
@@ -291,10 +297,22 @@ function ProjectCard({ project, index }) {
   return (
     <div ref={ref} className={`project-card-outer ${visible ? 'proj-visible' : ''}`} style={{ transitionDelay: `${index * 0.2}s` }}>
       <div ref={cardRef} className="project-card" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+        <div className="project-links">
+          {project.github && <a href={project.github} target="_blank" rel="noreferrer" className="project-link-btn btn-github">GITHUB ↗</a>}
+          {project.live && <a href={project.live} target="_blank" rel="noreferrer" className="project-link-btn btn-live">LIVE ↗</a>}
+        </div>
+        {project.image && (
+          <div className="project-card-image-wrapper">
+            <img src={project.image} alt={project.title} className="project-card-image" />
+            <div className="project-card-image-overlay" />
+          </div>
+        )}
         <div className="project-glare" />
-        <h3 className="project-title">{project.title}</h3>
-        <ul className="project-bullets">{project.bullets.map((b, i) => <li key={i}>{b}</li>)}</ul>
-        <div className="project-tags">{project.tags.map((t, i) => <span className="tag" key={i}>{t}</span>)}</div>
+        <div className="project-card-content">
+          <h3 className="project-title">{project.title}</h3>
+          <ul className="project-bullets">{project.bullets.map((b, i) => <li key={i}>{b}</li>)}</ul>
+          <div className="project-tags">{project.tags.map((t, i) => <span className="tag" key={i}>{t}</span>)}</div>
+        </div>
       </div>
     </div>
   );
@@ -913,11 +931,58 @@ ul{list-style:none;}
 .proj-visible{opacity:1;transform:translateY(0);}
 .project-card{
   --glare-x:50%;--glare-y:50%;
-  position:relative;overflow:hidden;
+  position:relative;overflow:hidden;min-height:100%;
   background:var(--glass);border:1px solid var(--glass-border);
-  border-radius:var(--radius);padding:32px;
+  border-radius:var(--radius);padding:0;
   transition:transform .15s ease,box-shadow .3s;
   box-shadow:0 4px 30px rgba(0,0,0,.3);
+}
+.project-card-image-wrapper{
+  position:relative;width:100%;height:200px;overflow:hidden;
+  border-bottom:1px solid var(--glass-border);
+}
+.project-card-image{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .5s ease;
+}
+.project-card:hover .project-card-image{transform:scale(1.05);}
+.project-card-image-overlay{
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
+  transition:all .3s ease;
+}
+.project-card:hover .project-card-image-overlay{
+  background:rgba(0,220,255,0.1);
+  box-shadow:inset 0 0 30px rgba(0,220,255,0.25);
+}
+.project-card-content{padding:28px 32px 32px;}
+.project-links{
+  position:absolute;top:12px;right:12px;
+  display:flex;gap:8px;z-index:20;
+}
+.project-link-btn{
+  display:flex;align-items:center;gap:4px;
+  padding:5px 10px;font-size:.65rem;font-weight:700;
+  text-decoration:none;text-transform:uppercase;letter-spacing:.5px;
+  background:rgba(255,255,255,0.05);backdrop-filter:blur(6px);
+  border:1.2px solid rgba(255,255,255,0.15);border-radius:6px;
+  color:rgba(255,255,255,0.9);transition:all .3s ease;
+}
+.btn-github:hover{
+  background:rgba(255,255,255,0.12);
+  border-color:#fff;
+  box-shadow:0 0 15px rgba(255,255,255,0.3);
+  color:#fff;
+}
+.btn-live{
+  color:#4ade80!important;
+  border-color:rgba(74,222,128,0.25)!important;
+  background:rgba(74,222,128,0.05)!important;
+}
+.btn-live:hover{
+  background:rgba(74,222,128,0.15)!important;
+  border-color:#4ade80!important;
+  box-shadow:0 0 15px rgba(74,222,128,0.4)!important;
 }
 .project-card:hover{box-shadow:0 12px 50px rgba(0,220,255,.12);}
 .project-glare{
