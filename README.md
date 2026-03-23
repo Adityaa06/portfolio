@@ -1,5 +1,7 @@
 # 🚀 Aditya Singh | Professional Portfolio
 
+**Live Demo: [portfolio-seven-drab-0iyy497i88.vercel.app](https://portfolio-seven-drab-0iyy497i88.vercel.app)**
+
 ![Portfolio Preview](https://github.com/Adityaa06/portfolio/raw/main/public/preview.png)
 
 A premium, futuristic, and highly interactive professional portfolio designed with a cyberpunk aesthetic. Built using **React.js** and **Vite**, this portfolio showcases my technical skills, projects, certifications, and achievements with smooth animations and a responsive layout.
