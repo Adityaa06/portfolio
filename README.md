@@ -78,7 +78,7 @@ To run this project locally, follow these steps:
 
 ## ❤️ Credits
 
-Special thanks to **Antigravity**, the powerful AI coding assistant by Google DeepMind, for its invaluable assistance in crafting and deploying this project.
+Special thanks to **Antigravity**, the powerful AI coding assistant by Google DeepMind, for its invaluable assistance in crafting this project.
 
 ---
 
