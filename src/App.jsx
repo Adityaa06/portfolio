@@ -79,6 +79,7 @@ const TRAINING = [
     org: 'Board Infinity',
     period: "Jun' 25 - Jul' 25",
     details: 'Mastered fundamental and advanced DSA concepts including arrays, linked lists, stacks, queues, trees, graphs, and recursion. Practiced 100+ coding problems across various platforms to strengthen logical thinking and improve algorithmic efficiency. Delivered a DSA-based mini-project with 20–30% faster execution by applying structured optimization techniques.',
+    link: 'https://drive.google.com/file/d/1ZYXy1Jolt0kOWNzbvQh4VhCNNDSWKaky/view',
   },
 ];
 
@@ -331,7 +332,12 @@ function TimelineItem({ item, index, side }) {
   return (
     <div ref={ref} className={`timeline-item ${side} ${visible ? 'tl-visible' : ''}`} style={{ transitionDelay: `${index * 0.15}s` }}>
       <div className="timeline-dot" />
-      <div className="timeline-card">
+      <div className={`timeline-card ${item.link ? 'has-cert' : ''}`}>
+        {item.link && (
+          <a href={item.link} target="_blank" rel="noreferrer" className="cert-link-btn" title="View Certificate">
+            View Certificate <span>↗</span>
+          </a>
+        )}
         <h3>{item.title || item.degree}</h3>
         <p className="tl-org">{item.org || item.school}</p>
         <p className="tl-date">{item.period || item.date}</p>
@@ -404,6 +410,138 @@ function ResumeModal({ isOpen, onClose }) {
           >
             Download Resume <span>⬇</span>
           </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ───────────── CHATBOT WIDGET ───────────── */
+function Chatbot() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    { text: "Hi there! 👋 Ask me anything about Aditya Singh — his skills, projects, education, or experience!", sender: 'bot' }
+  ]);
+  const [inputValue, setInputValue] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const chatEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    if (isOpen) scrollToBottom();
+  }, [messages, isOpen, isTyping]);
+
+  const getBotResponse = (input) => {
+    const low = input.toLowerCase();
+    
+    const matches = (keys) => keys.some(k => low.includes(k));
+
+    if (matches(['who', 'aditya', 'about', 'introduce', 'tell me', 'yourself', 'him', 'he', 'person'])) {
+      return "Aditya Singh is a B.Tech Computer Science student at Lovely Professional University with a CGPA of 6.6. He is a Full Stack Developer skilled in React.js, Node.js, PHP, and more. He has built projects like RecipeAI and Rangsutra, solved 250+ coding problems, and secured Top 5 in a hackathon. He is actively looking for opportunities! 😊";
+    }
+    
+    if (matches(['skill', 'tech', 'language', 'framework', 'know', 'stack', 'tool', 'platform'])) {
+      return "Aditya is proficient in Languages like C, C++, Python, JavaScript (ES6+), Java, and PHP. His framework expertise includes React.js, Node.js, Express.js, Tailwind CSS, and Laravel. He also works with MySQL, MongoDB, Supabase, Git, and Postman.";
+    }
+    
+    if (matches(['project', 'built', 'made', 'work', 'recipeai', 'rangsutra', 'e-commerce', 'shopping', 'assistant'])) {
+      return "Aditya has built impressive projects: \n1. RecipeAI: A smart AI cooking assistant (React, Node, Express, MongoDB).\n2. Rangsutra: A full-stack e-commerce site with PHP/MySQL.\nCheck the 'Featured Projects' section for more details and live links!";
+    }
+    
+    if (matches(['education', 'college', 'university', 'school', 'degree', 'cgpa', 'lpu', 'btech', 'matric', 'intermediate', 'heritage'])) {
+      return "He is currently pursuing a B.Tech in CSE at Lovely Professional University (2023-Present) with a CGPA of 6.6. He completed his Intermediate (72%) and Matriculation (77%) from Heritage Public School, Agra.";
+    }
+    
+    if (matches(['contact', 'email', 'phone', 'reach', 'linkedin', 'github', 'connect', 'social'])) {
+      return "You can reach Aditya at Aaadityaaa64@gmail.com or call +91 9870798989. Connect with him on LinkedIn (adityaa06) or see his code on GitHub (Adityaa06).";
+    }
+    
+    if (matches(['certificate', 'certification', 'course', 'training', 'dsa', 'oracle', 'infosys', 'nptel', 'coursera', 'board infinity'])) {
+      return "Notable Certifications: Oracle OCI 2025, Infosys Springboard (Computational Theory), NPTEL (Social Media Privacy), and Coursera (Computer Communications). He also completed advanced DSA training at Board Infinity.";
+    }
+    
+    if (matches(['achievement', 'hackathon', 'leetcode', 'coding', 'solve', 'rank', 'hackerank', 'gfg'])) {
+      return "Aditya has solved 250+ coding problems across LeetCode, GFG, and HackerRank. He also secured a Top 5 position in a competitive hackathon among 15 teams! 🏆";
+    }
+    
+    if (matches(['experience', 'internship', 'job', 'hire', 'resume', 'cv'])) {
+      return "Aditya is a highly motivated fresher actively looking for Full Stack or Software Developer roles. He is ready to contribute and learn! Drop him an email at Aaadityaaa64@gmail.com to discuss opportunities.";
+    }
+
+    return "I can only answer questions about Aditya Singh. Try asking about his skills, projects, education, or contact details! 😊";
+  };
+
+  const handleSend = () => {
+    if (!inputValue.trim()) return;
+    const userMsg = { text: inputValue, sender: 'user' };
+    setMessages(prev => [...prev, userMsg]);
+    setInputValue('');
+    setIsTyping(true);
+
+    setTimeout(() => {
+      const botMsg = { text: getBotResponse(userMsg.text), sender: 'bot' };
+      setMessages(prev => [...prev, botMsg]);
+      setIsTyping(false);
+    }, 1000);
+  };
+
+  return (
+    <div className="chatbot-container">
+      <button className={`chatbot-btn ${isOpen ? 'active' : ''}`} onClick={() => setIsOpen(!isOpen)} title="Ask Assistant">
+        {isOpen ? '✕' : (
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+            <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h1V5.73c-.6-.34-1-1-1-1.73a2 2 0 0 1 2-2M9 9a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1H9m.5 3a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3m5 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3M11 18h2v1h-2v-1z" />
+          </svg>
+        )}
+      </button>
+
+      <div className={`chat-window ${isOpen ? 'open' : ''}`}>
+        <div className="chat-header">
+          <div className="bot-info">
+            <div className="bot-avatar" style={{background: 'var(--cyan)'}}>
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="white">
+                <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h1V5.73c-.6-.34-1-1-1-1.73a2 2 0 0 1 2-2M9 9a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1H9m.5 3a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3m5 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3M11 18h2v1h-2v-1z" />
+              </svg>
+              <span className="online-dot" />
+            </div>
+            <div>
+              <h4>Ask About Aditya</h4>
+              <p>Assistant • Online</p>
+            </div>
+          </div>
+          <button className="chat-close" onClick={() => setIsOpen(false)}>✕</button>
+        </div>
+
+        <div className="chat-messages">
+          {messages.map((m, i) => (
+            <div key={i} className={`msg-wrapper ${m.sender}`}>
+              <div className="msg-bubble">{m.text}</div>
+            </div>
+          ))}
+          {isTyping && (
+            <div className="msg-wrapper bot">
+              <div className="msg-bubble typing">
+                <span>.</span><span>.</span><span>.</span>
+              </div>
+            </div>
+          )}
+          <div ref={chatEndRef} />
+        </div>
+
+        <div className="chat-input-area">
+          <input
+            type="text"
+            placeholder="Type your message..."
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+          />
+          <button className="chat-send" onClick={handleSend} aria-label="Send">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+          </button>
         </div>
       </div>
     </div>
@@ -523,22 +661,64 @@ export default function App() {
             <div className="face top" /><div className="face bottom" />
           </div>
         </div>
-        <div className="hero-content">
-          <p className="hero-greeting">Hello, I'm</p>
-          <h1 className="hero-name">ADITYA SINGH</h1>
-          <p className="hero-type">
-            <span className="type-prefix">&gt; </span>
-            <span className="type-text">{typeText}</span>
-            <span className="cursor-blink">|</span>
-          </p>
-          <div className="hero-cta">
-            <a href="#contact" className="btn btn-primary" onClick={(e) => { e.preventDefault(); scrollTo('contact'); }}>Get in Touch</a>
-            <a href="#projects" className="btn btn-outline" onClick={(e) => { e.preventDefault(); scrollTo('projects'); }}>View Projects</a>
-            <button className="btn btn-primary" onClick={() => setShowResumeModal(true)}>
-              Download Resume <span>⬇</span>
-            </button>
+
+        <div className="hero-container">
+          <div className="hero-left">
+            <div className="hero-content">
+              <p className="hero-greeting">Hello, I'm</p>
+              <h1 className="hero-name">ADITYA SINGH</h1>
+              <p className="hero-type">
+                <span className="type-prefix">&gt; </span>
+                <span className="type-text">{typeText}</span>
+                <span className="cursor-blink">|</span>
+              </p>
+              <div className="hero-cta">
+                <a href="#contact" className="btn btn-primary" onClick={(e) => { e.preventDefault(); scrollTo('contact'); }}>Get in Touch</a>
+                <a href="#projects" className="btn btn-outline" onClick={(e) => { e.preventDefault(); scrollTo('projects'); }}>View Projects</a>
+                <button className="btn btn-primary" onClick={() => setShowResumeModal(true)}>
+                  Download Resume <span>⬇</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="hero-right">
+            <div className="photo-wrapper"
+              onMouseMove={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (centerY - y) / 10;
+                const rotateY = (x - centerX) / 10;
+                e.currentTarget.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+              }}
+            >
+              <div className="photo-glow" />
+              <div className="glass-ribbons">
+                <div className="ribbon r1" />
+                <div className="ribbon r2" />
+                <div className="ribbon r3" />
+              </div>
+              <div className="floating-shards">
+                <div className="shard s1" />
+                <div className="shard s2" />
+                <div className="shard s3" />
+                <div className="shard s4" />
+                <div className="shard s5" />
+              </div>
+              <div className="photo-main-container">
+                <img src="/3.jpeg" alt="Aditya Singh" className="hero-photo" />
+                <div className="photo-glass-glare" />
+              </div>
+            </div>
           </div>
         </div>
+
         <div className="scroll-indicator">
           <div className="mouse"><div className="wheel" /></div>
           <span>Scroll Down</span>
@@ -634,6 +814,7 @@ export default function App() {
       </footer>
 
       <ResumeModal isOpen={showResumeModal} onClose={() => setShowResumeModal(false)} />
+      <Chatbot />
     </>
   );
 }
@@ -747,9 +928,29 @@ ul{list-style:none;}
 /* ── HERO ── */
 .hero{
   position:relative;min-height:100vh;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;text-align:center;
+  align-items:center;justify-content:center;
   padding:120px 20px 60px;overflow:hidden;
 }
+.hero-container {
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 40px;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+.hero-left {
+  text-align: left;
+}
+.hero-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1000px;
+}
+
 .hero-bg-cube{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:0;opacity:.12;}
 .cube{width:200px;height:200px;transform-style:preserve-3d;animation:rotateCube 20s linear infinite;}
 .face{position:absolute;width:200px;height:200px;border:1.5px solid var(--cyan);background:rgba(0,220,255,.03);opacity:.6;}
@@ -764,7 +965,7 @@ ul{list-style:none;}
   margin-bottom:12px;opacity:0;animation:fadeSlideUp .8s .3s forwards;
 }
 .hero-name{
-  font-family:var(--font-head);font-size:clamp(2.8rem,7vw,5.5rem);font-weight:900;
+  font-family:var(--font-head);font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;
   line-height:1.1;letter-spacing:2px;
   background:linear-gradient(135deg,#fff 0%,var(--cyan) 40%,var(--purple) 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
@@ -777,7 +978,7 @@ ul{list-style:none;}
 }
 
 .hero-type{
-  font-size:clamp(1rem,2.5vw,1.5rem);color:var(--text-dim);margin:20px 0 36px;
+  font-size:clamp(1rem,2.2vw,1.3rem);color:var(--text-dim);margin:20px 0 36px;
   font-family:var(--font-body);font-weight:400;
   opacity:0;animation:fadeSlideUp .8s .7s forwards;
 }
@@ -786,7 +987,139 @@ ul{list-style:none;}
 .cursor-blink{animation:blink .8s step-end infinite;color:var(--cyan);}
 @keyframes blink{50%{opacity:0;}}
 
-.hero-cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeSlideUp .8s .9s forwards;}
+.hero-cta{display:flex;gap:16px;justify-content:flex-start;flex-wrap:wrap;opacity:0;animation:fadeSlideUp .8s .9s forwards;}
+
+/* ── PHOTO STYLES ── */
+.photo-wrapper {
+  position: relative;
+  width: 350px;
+  height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-style: preserve-3d;
+  animation: photoFloat 6s ease-in-out infinite;
+}
+
+@keyframes photoFloat {
+  0%, 100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
+  50% { transform: translateY(-20px) rotateX(1deg) rotateY(1deg); }
+}
+
+.photo-glow {
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, rgba(0,220,255,0.1) 0%, rgba(139,92,246,0.08) 40%, transparent 70%);
+  z-index: -1;
+  filter: blur(40px);
+  animation: glowPulse 8s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+.glass-ribbons {
+  position: absolute;
+  width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.ribbon {
+  position: absolute;
+  top: 50%; left: 50%;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent 40%, rgba(0,220,255,0.05));
+  box-shadow: 0 0 20px rgba(0, 220, 255, 0.05), inset 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+.r1 { width: 130%; height: 130%; transform: translate(-50%, -50%) rotate3d(1, 0.5, 0, 45deg); animation: ribbonSpin 15s linear infinite; }
+.r2 { width: 115%; height: 115%; transform: translate(-50%, -50%) rotate3d(-0.5, 1, 0, -30deg); animation: ribbonSpin 12s linear infinite reverse; }
+.r3 { width: 145%; height: 145%; transform: translate(-50%, -50%) rotate3d(0.2, 0.2, 1, 15deg); animation: ribbonSpin 20s linear infinite; opacity: 0.4; }
+
+@keyframes ribbonSpin {
+  from { transform: translate(-50%, -50%) rotate3d(inherit) rotate(0); }
+  to { transform: translate(-50%, -50%) rotate3d(inherit) rotate(360deg); }
+}
+
+.floating-shards {
+  position: absolute;
+  width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.shard {
+  position: absolute;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+  backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.s1 { width: 40px; height: 60px; top: 10%; left: 80%; transform: translateZ(100px); animation: shardFloat 8s ease-in-out infinite; }
+.s2 { width: 30px; height: 30px; top: 70%; left: -10%; transform: translateZ(150px); animation: shardFloat 10s ease-in-out infinite reverse; }
+.s3 { width: 50px; height: 20px; top: 80%; left: 90%; transform: translateZ(80px); animation: shardFloat 12s ease-in-out infinite; }
+.s4 { width: 25px; height: 50px; top: -5%; left: 20%; transform: translateZ(120px); animation: shardFloat 9s ease-in-out infinite reverse; }
+.s5 { width: 35px; height: 35px; top: 40%; left: 105%; transform: translateZ(60px); animation: shardFloat 11s ease-in-out infinite; }
+
+@keyframes shardFloat {
+  0%, 100% { transform: translateZ(inherit) translateY(0) rotate(0); }
+  50% { transform: translateZ(inherit) translateY(-30px) rotate(15deg); }
+}
+
+.photo-main-container {
+  position: relative;
+  width: 350px;
+  height: 350px;
+  z-index: 5;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(0, 220, 255, 0.4);
+  box-shadow: 
+    0 30px 70px rgba(0, 0, 0, 0.7),
+    0 0 40px rgba(0, 220, 255, 0.2),
+    inset 0 0 30px rgba(0, 220, 255, 0.1);
+  background: rgba(5, 5, 20, 0.6);
+  transform: translateZ(50px);
+}
+
+.hero-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.photo-glass-glare {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 40%, rgba(255,255,255,0.05) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.photo-main-container:hover .hero-photo {
+  transform: scale(1.1) rotate(2deg);
+}
+
+@media(max-width:968px){
+  .hero-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 60px;
+  }
+  .hero-left { text-align: center; }
+  .hero-cta { justify-content: center; }
+  .photo-wrapper { width: 300px; height: 300px; }
+  .photo-main-container { width: 300px; height: 300px; }
+}
 
 /* ── BUTTONS ── */
 .btn{
@@ -1026,10 +1359,12 @@ ul{list-style:none;}
 .left .timeline-dot{right:-7px;}
 .right .timeline-dot{left:-7px;}
 .timeline-card{
+  position:relative;
   background:var(--glass);border:1px solid var(--glass-border);
   border-radius:var(--radius-sm);padding:20px;
   transition:box-shadow .3s;
 }
+.timeline-card.has-cert{padding-top:32px;}
 .timeline-card:hover{box-shadow:0 8px 30px rgba(0,220,255,.1);}
 .timeline-card h3{font-family:var(--font-head);font-size:1rem;color:var(--text);margin-bottom:4px;}
 .tl-org{color:var(--cyan);font-weight:600;font-size:.9rem;}
@@ -1053,12 +1388,14 @@ ul{list-style:none;}
   transition:opacity .6s ease,transform .6s ease,box-shadow .3s;
 }
 .cert-link-btn{
-  position:absolute;top:10px;right:10px;
+  position:absolute;top:0;right:0;
   display:flex;align-items:center;gap:4px;
-  padding:4px 8px;font-size:.65rem;font-weight:600;
+  padding:6px 12px;font-size:.65rem;font-weight:700;
   color:var(--cyan);text-transform:uppercase;letter-spacing:.5px;
-  background:rgba(0,220,255,.05);backdrop-filter:blur(4px);
-  border:1px solid rgba(0,220,255,.2);border-radius:6px;
+  background:rgba(0,220,255,.08);backdrop-filter:blur(8px);
+  border-left:1px solid rgba(0,220,255,.2);
+  border-bottom:1px solid rgba(0,220,255,.2);
+  border-radius:0 10px 0 10px;
   transition:all .3s ease;z-index:2;
 }
 .cert-link-btn:hover{
@@ -1185,6 +1522,92 @@ ul{list-style:none;}
   .modal-content{max-height:95vh;}
   .modal-body{min-height:350px;}
   .resume-iframe{min-height:350px;}
+}
+
+/* ── CHATBOT WIDGET ── */
+.chatbot-container{position:fixed;bottom:30px;right:30px;z-index:9999;}
+.chatbot-btn{
+  width:60px;height:60px;border-radius:50%;
+  background:rgba(10,10,30,0.6);backdrop-filter:blur(15px);
+  border:1px solid rgba(0,220,255,0.3);
+  color:var(--cyan);font-size:1.5rem;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;box-shadow:0 0 20px rgba(0,220,255,0.1);transition:all .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation:btnPulse 3s infinite;
+}
+.chatbot-btn.active{transform:rotate(90deg);background:var(--purple);color:#fff;border-color:var(--purple);}
+@keyframes btnPulse{0%{box-shadow:0 0 0 0 rgba(0,220,255,0.2);}70%{box-shadow:0 0 0 10px rgba(0,220,255,0);}100%{box-shadow:0 0 0 0 rgba(0,220,255,0);}}
+
+.chat-window{
+  position:absolute;bottom:80px;right:0;width:400px;height:500px;
+  background:var(--glass);backdrop-filter:blur(20px) saturate(1.4);
+  border:1px solid var(--glass-border);border-radius:var(--radius);
+  display:flex;flex-direction:column;overflow:hidden;
+  opacity:0;transform:translateY(30px) scale(0.95);pointer-events:none;
+  transition:all .4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.chat-window.open{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
+
+.chat-header{
+  padding:16px 20px;background:rgba(255,255,255,0.05);display:flex;
+  align-items:center;justify-content:space-between;border-bottom:1px solid var(--glass-border);
+}
+.bot-info{display:flex;align-items:center;gap:12px;}
+.bot-avatar{
+  width:40px;height:40px;background:var(--bg2);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;position:relative;
+}
+.online-dot{
+  position:absolute;bottom:2px;right:2px;width:10px;height:100px;
+  width:10px;height:10px;border-radius:50%;background:#10B981;border:2px solid var(--bg2);
+}
+.chat-header h4{font-family:var(--font-head);font-size:.9rem;color:var(--text);margin:0;}
+.chat-header p{font-size:.7rem;color:var(--text-dim);margin:0;}
+.chat-close{background:none;border:none;color:var(--text-dim);font-size:1.2rem;cursor:pointer;}
+
+.chat-messages{flex:1;padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;}
+.msg-wrapper{display:flex;width:100%;}
+.msg-wrapper.bot{justify-content:flex-start;}
+.msg-wrapper.user{justify-content:flex-end;}
+
+.msg-bubble{
+  max-width:80%;padding:10px 16px;border-radius:18px;font-size:.9rem;line-height:1.5;
+  animation:msgIn .3s ease forwards;
+}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+.bot .msg-bubble{
+  background:rgba(0,220,255,0.1);color:var(--text);
+  border:1px solid var(--cyan-dim);border-bottom-left-radius:4px;
+}
+.user .msg-bubble{
+  background:rgba(255,255,255,0.08);color:#fff;
+  border:1px solid rgba(255,255,255,0.1);border-bottom-right-radius:4px;
+}
+
+.typing span{animation:dotFlash 1.4s infinite;margin:0 1px;font-weight:900;font-size:1.2rem;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes dotFlash{0%,100%{opacity:0.2;}50%{opacity:1;}}
+
+.chat-input-area{
+  padding:16px 20px;background:rgba(255,255,255,0.03);display:flex;gap:10px;
+  border-top:1px solid var(--glass-border);
+}
+.chat-input-area input{
+  flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);
+  border-radius:20px;padding:10px 16px;color:var(--text);font-family:var(--font-body);
+  font-size:.9rem;outline:none;transition:border-color .3s;
+}
+.chat-input-area input:focus{border-color:var(--cyan-dim);}
+.chat-send{
+  background:var(--cyan);border:none;width:40px;height:40px;border-radius:50%;
+  color:#000;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:all .3s;
+}
+.chat-send:hover{background:var(--purple);color:#fff;transform:scale(1.1);}
+
+@media(max-width:500px){
+  .chat-window{width:calc(100vw - 40px);height:60vh;bottom:70px;right:-10px;}
 }
 `;
 
