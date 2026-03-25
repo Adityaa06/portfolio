@@ -92,6 +92,7 @@ const CERTIFICATES = [
 
 const ACHIEVEMENTS = [
   { text: 'Solved 250+ coding problems across different platforms (Leet Code, GFG).', counter: 250, suffix: '+', label: 'Problems Solved' },
+  { text: 'Achieved a 3-star rating on HackerRank, showcasing proficiency in data structures and algorithms.', counter: 3, suffix: '★', label: 'HackerRank Rank' },
   { text: 'Participated in a hackathon and secured a top 5 position among 15 competing teams.', counter: 5, suffix: '', label: 'Top Finish' },
 ];
 
@@ -440,7 +441,7 @@ function Chatbot() {
     const matches = (keys) => keys.some(k => low.includes(k));
 
     if (matches(['who', 'aditya', 'about', 'introduce', 'tell me', 'yourself', 'him', 'he', 'person'])) {
-      return "Aditya Singh is a B.Tech Computer Science student at Lovely Professional University with a CGPA of 6.6. He is a Full Stack Developer skilled in React.js, Node.js, PHP, and more. He has built projects like RecipeAI and Rangsutra, solved 250+ coding problems, and secured Top 5 in a hackathon. He is actively looking for opportunities! 😊";
+      return "Aditya Singh is a B.Tech Computer Science student at Lovely Professional University with a CGPA of 6.6. He is a Full Stack Developer skilled in React.js, Node.js, PHP, and more. He has built 4+ projects (like RecipeAI and Rangsutra), earned 5+ certifications, and is 3-star ranked on HackerRank. He's actively looking for opportunities! 😊";
     }
     
     if (matches(['skill', 'tech', 'language', 'framework', 'know', 'stack', 'tool', 'platform'])) {
@@ -464,7 +465,7 @@ function Chatbot() {
     }
     
     if (matches(['achievement', 'hackathon', 'leetcode', 'coding', 'solve', 'rank', 'hackerank', 'gfg'])) {
-      return "Aditya has solved 250+ coding problems across LeetCode, GFG, and HackerRank. He also secured a Top 5 position in a competitive hackathon among 15 teams! 🏆";
+      return "Aditya has solved 250+ coding problems across LeetCode, GFG, and HackerRank. He is 3-star ranked on HackerRank and also secured a Top 5 position in a competitive hackathon! 🏆";
     }
     
     if (matches(['experience', 'internship', 'job', 'hire', 'resume', 'cv'])) {
@@ -735,8 +736,8 @@ export default function App() {
             </div>
             <div className="about-stats">
               <div className="stat-item"><span className="stat-num">250+</span><span className="stat-label">Problems Solved</span></div>
-              <div className="stat-item"><span className="stat-num">2+</span><span className="stat-label">Projects Built</span></div>
-              <div className="stat-item"><span className="stat-num">4</span><span className="stat-label">Certifications</span></div>
+              <div className="stat-item"><span className="stat-num">4+</span><span className="stat-label">Projects Built</span></div>
+              <div className="stat-item"><span className="stat-num">5+</span><span className="stat-label">Certifications</span></div>
             </div>
           </div>
         </Section>
